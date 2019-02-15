@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"net"
 	"os"
@@ -8,8 +9,22 @@ import (
 	"time"
 )
 
+var VERSION = "v1.1"
+
 func main() {
+	versionFlag := flag.Bool("v", false, "display version")
+	flag.Parse()
+
+	if *versionFlag {
+		fmt.Println("dingdong " + VERSION)
+	}
+
+	if len(os.Args) < 2 {
+		fmt.Println("error:  an argument must be given.  Please consult the dingdong manpage for more information.")
+		os.Exit(1)
+	}
 	host, port := getArgs(os.Args[1])
+
 	if checkAvailability(host, port) {
 		fmt.Println("Listening")
 		os.Exit(1)
