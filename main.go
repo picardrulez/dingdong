@@ -17,6 +17,7 @@ func main() {
 
 	if *versionFlag {
 		fmt.Println("dingdong " + VERSION)
+		return
 	}
 
 	if len(os.Args) < 2 {
