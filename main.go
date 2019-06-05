@@ -9,10 +9,11 @@ import (
 	"time"
 )
 
-var VERSION = "v1.1"
+var VERSION = "v2.0"
 
 func main() {
 	versionFlag := flag.Bool("v", false, "display version")
+	humanFlag := flag.Bool("h", false, "human readable")
 	flag.Parse()
 
 	if *versionFlag {
@@ -20,19 +21,33 @@ func main() {
 		return
 	}
 
-	if len(os.Args) < 2 {
+	if len(flag.Arg(0)) < 2 {
 		fmt.Println("error:  an argument must be given.  Please consult the dingdong manpage for more information.")
-		os.Exit(1)
+		os.Exit(2)
 	}
-	host, port := getArgs(os.Args[1])
+
+	host, port := getArgs(flag.Arg(0))
 
 	if checkAvailability(host, port) {
-		fmt.Println("Listening")
-		os.Exit(1)
-		return
+		if *humanFlag {
+			fmt.Println("Listening")
+			os.Exit(0)
+			return
+		} else {
+			fmt.Println("1")
+			os.Exit(0)
+			return
+		}
 	} else {
-		fmt.Println("Not Listening")
-		return
+		if *humanFlag {
+			fmt.Println("Not Listening")
+			os.Exit(1)
+			return
+		} else {
+			fmt.Println("0")
+			os.Exit(1)
+			return
+		}
 	}
 }
 
